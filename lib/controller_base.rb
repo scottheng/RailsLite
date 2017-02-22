@@ -6,7 +6,6 @@ require 'byebug'
 
 class ControllerBase
   attr_reader :req, :res, :params
-  include Singleton
 
   # Setup the controller
   def initialize(req, res, params = {})
@@ -63,7 +62,7 @@ class ControllerBase
 
   # use this with the router to call action_name (:index, :show, :create...)
   def invoke_action(name)
+    self.send(:render, template_name) unless already_built_response?
     self.send(name)
-    self.send(:render, template_name) unless already_built_response
   end
 end
